@@ -11,5 +11,4 @@ class AIController {
     }
 };
 
-const ai = new AIController();
-console.log(ai);
+export { AIController };
