@@ -1,12 +1,24 @@
 {
-  "name": "clayheadjs",
-  "version": "1.0.0",
+  "name": "clayhead",
+  "version": "1.0.1",
+  "type": "module",
   "description": "Official Clayhead client SDK for JavaScript",
-  "main": "index.js",
+  "main": "build/esm/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Clayhead, Inc.",
+  "contributors": [
+    {
+      "name": "Bo Powers",
+      "email": "bo@clayhead.ai"
+    }
+  ],
+  "homepage": "https://clayhead.ai",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/clayheadai/clayheadjs.git"
+  },
+  "bugs": "https://github.com/clayheadai/clayheadjs/issues",
   "license": "MIT",
   "dependencies": {
     "dotenv": "^16.0.1",
