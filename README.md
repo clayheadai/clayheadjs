@@ -1,6 +1,3 @@
 # Clayhead JavaScript SDK
 
-Currently under heavy development.
-
-## TODO
-- Add CJS support
+Currently under heavy development. Please check back soon.
