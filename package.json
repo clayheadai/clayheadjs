@@ -1,11 +1,38 @@
 {
   "name": "clayhead",
-  "version": "1.0.1",
-  "type": "module",
+  "version": "1.0.2",
   "description": "Official Clayhead client SDK for JavaScript",
-  "main": "build/esm/index.js",
+  "keywords": [
+    "realtime",
+    "ai",
+    "npc"
+  ],
+  "files": [
+    "dist/",
+    "build/"
+  ],
+  "type": "commonjs",
+  "main": "./build/cjs/index.js",
+  "module": "./build/esm/index.js",
+  "exports": {
+    "./package.json": "./package.json",
+    "./dist/clayhead.js": "./dist/clayhead.js",
+    "./dist/clayhead.js.map": "./dist/clayhead.js.map",
+    ".": {
+      "import": {
+        "node": "./build/esm-debug/index.js",
+        "default": "./build/esm/index.js"
+      },
+      "require": "./build/cjs/index.js"
+    }
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "compile": "rimraf ./build && tsc && tsc -p tsconfig.esm.json && ./postcompile.sh",
+    "build": "rollup -c support/rollup.config.umd.js && rollup -c support/rollup.config.esm.js && rollup -c support/rollup.config.umd.msgpack.js",
+    "test": "npm run format:check",
+    "format:check": "prettier --check \"lib/**/*.ts\" \"test/**/*.js\" \"test/**/*.ts\" \"support/**/*.js\"",
+    "format:fix": "prettier --write \"lib/**/*.ts\" \"test/**/*.js\" \"test/**/*.ts\" \"support/**/*.js\"",
+    "prepack": "npm run compile"
   },
   "contributors": [
     {
@@ -21,7 +48,25 @@
   "bugs": "https://github.com/clayheadai/clayheadjs/issues",
   "license": "MIT",
   "dependencies": {
+    "cytoscape": "^3.21.2",
     "dotenv": "^16.0.1",
+    "rimraf": "^3.0.2",
     "socket.io-client": "^4.5.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.18.6",
+    "@babel/plugin-transform-object-assign": "^7.18.6",
+    "@babel/preset-env": "^7.18.6",
+    "@rollup/plugin-alias": "^3.1.9",
+    "@rollup/plugin-babel": "^5.3.1",
+    "@rollup/plugin-commonjs": "^22.0.1",
+    "@rollup/plugin-node-resolve": "^13.3.0",
+    "babel-loader": "^8.2.5",
+    "prettier": "^2.7.1",
+    "rollup": "^2.75.7",
+    "rollup-plugin-terser": "^7.0.2",
+    "typescript": "^4.7.4",
+    "webpack": "^5.73.0",
+    "webpack-cli": "^4.10.0"
   }
 }
