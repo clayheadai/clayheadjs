@@ -1,2 +1,2 @@
-import { CharacterClient } from "./index.js";
-export default CharacterClient;
+import { ClayheadClient } from "./index.js";
+export default ClayheadClient;
