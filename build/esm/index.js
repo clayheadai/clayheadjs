@@ -1,2 +1,2 @@
-import CharacterClient from "./character-client";
-export { CharacterClient, };
+import { ClayheadClient } from "./client";
+export { ClayheadClient, };
