@@ -1,89 +1,94 @@
 import { io, Socket } from "socket.io-client";
-import { TextPercept } from "./percepts.js";
-
+import { TextPercept, InanimatePercept, AnimatePercept } from "./percepts.js";
+import { ClientOptions } from "./options.js";
 
 /** Manages perception and action transfer between a single character and the realtime server.
  * @param socket Reference to a client's socket connection
  * @param characterKey An identifier for either a character or character group
-*/
+ */
 class CharacterController {
-    private _socket: Socket;
-    /** UUID assigned to this character by the server */
-    public id: string;
-    public characterKey: string;
+  private _socket: Socket;
+  /** UUID assigned to this character by the server */
+  public id: string;
+  public characterKey: string;
 
-    constructor(socket: Socket, characterKey: string) {
-        this._socket = socket;
-        this.characterKey = characterKey;
-        this.initialize();
-    }
+  constructor(socket: Socket, characterKey: string) {
+    this._socket = socket;
+    this.characterKey = characterKey;
+    this.initialize();
+  }
 
-    /** Create the character on the server and store the server-assigned uuid. 
-     * 
-     * Register listeners for action events directed to this character.
-    */
-    initialize() {
-        this._socket.emit("create", this.characterKey, (response) => {
-            this.id = response.characterId;
-        });
+  /** Create the character on the server and store the server-assigned uuid. */
+  initialize() {
+    this._socket.emit("create", this.characterKey, (response) => {
+      this.id = response.characterId;
+    });
+  }
 
-        // Listen to action events directed to this character
-        this._socket.on("say", (characterId, action) => {
-            if (characterId === this.id) {
-                console.log(action.text);
-            }
-        });
-    }
+  /** VISUAL - Send perception of text to the server
+   * @param percept Object containing perceptual data
+   */
+  seeText(percept: TextPercept) {
+    this._socket.emit("see/text", this.id, percept);
+  }
 
-    /** Send perception of text to the server
-     * @param percept Object containing perceptual data
-    */
-    seeText(percept: TextPercept) {
-        this._socket.emit("see/text", this.id, percept);
-    }
+  /** VISUAL - Send perception of an inanimate object to the server
+   * @param percept Object containing perceptual data
+   */
+  seeInanimate(percept: InanimatePercept) {
+    this._socket.emit("see/inanimate", this.id, percept);
+  }
 
-    /** Send perception of an inanimate object to the server
-     * @param percept Object containing perceptual data
-    */
-     seeInanimate(percept: string) {
-        this._socket.emit("see/inanimate", this.id, percept);
-    }
+  /** VISUAL - Send perception of an animate entity to the server
+   * @param percept Object containing perceptual data
+   */
+  seeAnimate(percept: AnimatePercept) {
+    this._socket.emit("see/animate", this.id, percept);
+  }
 
-     /** Send perception of an animate entity to the server
-     * @param percept Object containing perceptual data
-    */
-      seeAnimate(percept: string) {
-        this._socket.emit("see/animate", this.id, percept);
-    }
-    
+  /** Register a function to be called whenever a specific action arrives from the server.
+   * @param action name of the action
+   * @param callback function to call when action data is recieved
+   */
+  addActionListener(action: string, callback: (data: any) => void) {
+    this._socket.on(action, (characterId: string, data: any) => {
+      if (characterId === this.id) {
+        callback(data);
+      }
+    });
+  }
 }
 
-/** Main client class which maintains a connection with the realtime server. 
+/** Main client class which maintains a connection with the realtime server.
  * @param url A valid URL connection string.
-*/
+ */
 class ClayheadClient {
-    private _socket: Socket;
+  private _socket: Socket;
+  private _latencyCheckInterval = 5000;
 
-    constructor(url: string) {
-        // Connect to server
-        this._socket = io(url);
-        this._socket.on("connect", () => {
-            console.log(`Connected as session: ${this._socket.id}`);
-        });
+  constructor(url: string, options?: ClientOptions) {
+    this._socket = io(url);
 
-        // Handle connection error
-        this._socket.on("connect_error", (err) => {
-            console.error(`Connection error: ${err}`);
-        });
-    }
+    this._socket.on("connect", () => {
+      console.log(`Connected as session: ${this._socket.id}`);
+    });
 
-    character(characterKey: string): CharacterController {
-        return new CharacterController(this._socket, characterKey);
-    }
+    this._socket.on("connect_error", (err) => {
+      console.error(`Connection error: ${err}`);
+    });
 
-};
+    setInterval(() => {
+      const start = Date.now();
+      this._socket.emit("ping", () => {
+        const duration = Date.now() - start;
+        console.log(`Latency: ${duration}`);
+      });
+    }, this._latencyCheckInterval);
+  }
 
-export {
-    ClayheadClient,
-    CharacterController
-};
+  controller(characterKey: string): CharacterController {
+    return new CharacterController(this._socket, characterKey);
+  }
+}
+
+export { ClayheadClient, CharacterController };

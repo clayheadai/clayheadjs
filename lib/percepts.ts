@@ -1,44 +1,44 @@
 interface Vector3 {
-    x: number,
-    y: number,
-    z: number,
+  x: number;
+  y: number;
+  z: number;
 }
 
 interface Agent {
-    name?: string,
+  name?: string;
 }
 
 interface Percept {
-    timestamp: Date,
+  timestamp: Date;
 }
 
 interface LanguagePercept extends Percept {
-    text: string,
-    source?: Agent,
+  text: string;
+  source?: Agent;
 }
 
 interface ObjectPercept extends Percept {
-    center: Vector3,
-    extent: Vector3,
-    velocity?: Vector3,
-    synset?: string,
+  center: Vector3;
+  extent: Vector3;
+  velocity?: Vector3;
+  synset?: string;
 }
 
 interface InanimatePercept extends ObjectPercept {}
 interface AnimatePercept extends ObjectPercept, Agent {}
 
 interface TextPercept extends LanguagePercept {
-    medium?: ObjectPercept
+  medium?: ObjectPercept;
 }
 
 // Exports
 export {
-    Vector3,
-    Agent,
-    Percept,
-    LanguagePercept,
-    TextPercept,
-    ObjectPercept,
-    InanimatePercept,
-    AnimatePercept,
+  Vector3,
+  Agent,
+  Percept,
+  LanguagePercept,
+  TextPercept,
+  ObjectPercept,
+  InanimatePercept,
+  AnimatePercept,
 };

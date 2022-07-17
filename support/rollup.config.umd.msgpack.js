@@ -6,7 +6,5 @@ module.exports = {
     ...base.output[1],
     file: "./dist/clayhead.msgpack.min.js",
   },
-  plugins: [
-    ...base.plugins,
-  ],
+  plugins: [...base.plugins],
 };

@@ -6,7 +6,5 @@ module.exports = {
     ...config.output,
     filename: "clayhead.msgpack.min.js",
   },
-  plugins: [
-    ...config.plugins,
-  ],
+  plugins: [...config.plugins],
 };
