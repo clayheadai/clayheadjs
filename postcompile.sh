@@ -6,5 +6,5 @@ cp -r ./build/esm/ ./build/esm-debug/
 
 sed -e '/debug(/d' ./build/esm/*.js
 
-# for backward compatibility with `const socket = require("socket.io-client")(...)`
+# for backward compatibility with `const socket = require("clayhead")(...)`
 echo -e '\nmodule.exports = lookup;' >> ./build/cjs/index.js

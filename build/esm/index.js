@@ -1,2 +1,2 @@
 import { ClayheadClient } from "./client";
-export { ClayheadClient, };
+export { ClayheadClient };
