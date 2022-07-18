@@ -29,21 +29,21 @@ class CharacterController {
    * @param percept Object containing perceptual data
    */
   seeText(percept: TextPercept) {
-    this._socket.emit("see/text", this.id, percept);
+    this._socket.emit("seeText", this.id, percept);
   }
 
   /** VISUAL - Send perception of an inanimate object to the server
    * @param percept Object containing perceptual data
    */
   seeInanimate(percept: InanimatePercept) {
-    this._socket.emit("see/inanimate", this.id, percept);
+    this._socket.emit("seeInanimate", this.id, percept);
   }
 
   /** VISUAL - Send perception of an animate entity to the server
    * @param percept Object containing perceptual data
    */
   seeAnimate(percept: AnimatePercept) {
-    this._socket.emit("see/animate", this.id, percept);
+    this._socket.emit("seeAnimate", this.id, percept);
   }
 
   /** Register a function to be called whenever a specific action arrives from the server.
