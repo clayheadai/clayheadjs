@@ -47,6 +47,17 @@ class CharacterController {
             }
         });
     }
+    /** Register a function to be called whenever a specific action arrives from the server.
+     * @param action name of the action
+     * @param callback function to call when action data is recieved
+     */
+    addActionListener(action, callback) {
+        this._socket.on(action, (characterId, data) => {
+            if (characterId === this.id) {
+                callback(data);
+            }
+        });
+    }
 }
 exports.CharacterController = CharacterController;
 /** Main client class which maintains a connection with the realtime server.
