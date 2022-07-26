@@ -52,29 +52,10 @@ const client = new ClayheadClient(url);
 
 In order to authenticate with the realtime API, you must provide a token as part of the URL query.
 
-### Bring the character online using a character key
+### Create a character controller
 
-```
-const character = client.character("some-character-key");
-```
+TODO
 
-The character key determines which character is being created. This key is assigned when you setup either single characters or character groups using the [Clayhead Studio](https://clayhead.ai) app.
+### Send perception data and receive actions
 
-It is easy to create multiple characters per client:
-
-```
-const jack = client.character("jack-key");
-const diane = client.character("diane-key");
-```
-
-### Send percepts and receive actions
-
-This is where the magic happens. Let's send Jack some text to read.
-
-```
-const percept = { text: "hello Jack!" };
-
-jack.seeText(percept);
-```
-
-TODO: Actions
+TODO
