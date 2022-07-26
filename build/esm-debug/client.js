@@ -19,26 +19,14 @@ class CharacterController {
      * @param percept Object containing perceptual data
      */
     seeText(percept) {
-        this._socket.emit("seeText", this.id, percept);
-    }
-    /** VISUAL - Send perception of an inanimate object to the server
-     * @param percept Object containing perceptual data
-     */
-    seeInanimate(percept) {
-        this._socket.emit("seeInanimate", this.id, percept);
-    }
-    /** VISUAL - Send perception of an animate entity to the server
-     * @param percept Object containing perceptual data
-     */
-    seeAnimate(percept) {
-        this._socket.emit("seeAnimate", this.id, percept);
+        this._socket.emit("perception/sight/text", this.id, percept);
     }
     /** Register a function to be called whenever a specific action arrives from the server.
      * @param action name of the action
      * @param callback function to call when action data is recieved
      */
-    addActionListener(action, callback) {
-        this._socket.on(action, (characterId, data) => {
+    registerActionHook(action, callback) {
+        this._socket.on(`action/${action}`, (characterId, data) => {
             if (characterId === this.id) {
                 callback(data);
             }
